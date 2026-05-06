@@ -2,14 +2,53 @@
 // Javier Ignacio Ossandon Calderon - 21.979.689-2 - Ingenieria Civil Industrial - javierossand
 package Default;
 import java.util.*;
+import java.util.ArrayList;
 import java.io.*;
 
+
 public class App {
-	
+	private static Partida PartidaActual;
+	private static ArrayList<Pokemon> listapokemons;
+	private static ArrayList<Habitat> listabiomas;
 	private static Scanner s = new Scanner(System.in);
+    private static Scanner lectorRegistros = null;
+    private static Scanner LectorHabitats = null;
+    private static Scanner LectorPokedex = null;
+    private static Scanner LectorGimnasio = null;
+    private static Scanner LectorAltoMando = null;
+    
 
 	public static void main(String[] args) {
+		
+		listabiomas = new ArrayList<Habitat>();
+		listapokemons = new ArrayList<Pokemon>();
+		
+		lectorRegistros = CargarArchivo(lectorRegistros, "Registros.txt");
+		LectorHabitats=CargarArchivo(LectorHabitats, "Habitats.txt");
+		LectorPokedex=CargarArchivo(LectorPokedex, "Pokedex.txt");
+		LectorGimnasio=CargarArchivo(LectorGimnasio, "Gimnasios.txt");
+		LectorAltoMando=CargarArchivo(LectorAltoMando, "Alto Mando.txt");
+		
+		while(LectorHabitats.hasNextLine()) {
+			String linea = LectorHabitats.nextLine();
+			CargarHabitats(linea, listabiomas);
+		}
+		
+		
+		while(LectorPokedex.hasNextLine()) {
+			String linea = LectorPokedex.nextLine();
+			CargarPokemons(linea, listapokemons);
+			
+		}
+		
+		
+		for (Habitat h : listabiomas) {
+			h.ConsultarPokemonsZona(h);
+		}
+		
+		
 		cargarMenu();
+		
 	}
 
 	private static void cargarMenu() {
@@ -31,8 +70,10 @@ public class App {
 			break;
 
 			case "2":
-				System.out.println("Ingrese su apodo de jugador:");
-				String nomJugador = s.nextLine(); //sobrescribir toda la información que haya en Registros.txt por la nueva.
+				System.out.println("Ingrese su apodo de jugador");
+				String nombre = s.nextLine();
+				PartidaActual = new Partida(nombre);    
+				System.out.println("Bienvenido "+PartidaActual.getNombreJugador()+"!!");//sobrescribir toda la información que haya en Registros.txt por la nueva.
 				cargarSubMenu();
 
 			break;
@@ -56,7 +97,7 @@ public class App {
 
 		String opcion;
 		do {
-		System.out.println("Bienvenido al SubMenu, ingrese una opcion");
+		System.out.println(PartidaActual.getNombreJugador()+" ¿Que Deseas Hacer?");
 		System.out.println("");
 		System.out.println("1. Revisar Equipo.");//Debe imprimir la información (nombre, tipo y suma de todas las estadísticas) de cada Pokémon que el jugador tenga en su equipo.
 		System.out.println("2. Salir A Capturar.");//Debe mostrarle al usuario todas las zonas existentes para salir a capturar un Pokémon. Al seleccionar una zona, debe generarse un Pokémon aleatorio (que exista en esa zona) y el usuario tendrá dos opciones: 1) Capturar. 2) Huir. En caso de capturarlo, se debe añadir a su lista de Pokémon.
@@ -74,15 +115,47 @@ public class App {
 
 		switch (opcion) {
 		
-		case "1":				
-
+		
+		case "1":	
+			PartidaActual.ListaPokemons();
+			
 		break;
 
 		case "2":
-
+			System.out.println("Donde deseas ir a explorar?");
+			for(int i = 0; i<listabiomas.size();i++) {
+				System.out.println(i+") "+listabiomas.get(i));
+			}
+			int eleccion = Integer.parseInt(s.nextLine());
+			Habitat HElegido = listabiomas.get(eleccion);
+			Pokemon aparicion = HElegido.AparicionPokemon(HElegido);
+			System.out.println("APARECIO UN "+aparicion.getNombrePokemon()+"!!!");
+			System.out.println("Que deseas Hacer?");
+			System.out.println("1) Capturar");
+			System.out.println("2) Huir");
+			eleccion = Integer.parseInt(s.nextLine());
+			
+			if(eleccion == 2) {
+				System.out.println("Has Escapado!!");
+				break;
+			}
+			if(eleccion == 1) {
+				aparicion.FueCapturado(aparicion, PartidaActual);
+				
+		
+			}
+		
 		break;
 		
 		case "3":
+			System.out.println("Que Pokemons desea intercambiar?");
+			PartidaActual.ListaPokemons();
+			System.out.println("ingrese el primer Pokemon");
+			int pos1 = Integer.parseInt(s.nextLine());
+			System.out.println("ingrese el segundo pokemon");
+			int pos2 = Integer.parseInt(s.nextLine());
+			PartidaActual.IntercambiarPokemons(pos1, pos2);
+			
 
 		break;
 		
@@ -114,7 +187,57 @@ public class App {
 		}
 
 		} while (!opcion.equals("9"));// ejecutar mientras opcion sea distinto de 9	
-	}		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private static Scanner CargarArchivo(Scanner scanner,String direccion) {
+		try {
+			File file1 = new File(direccion);
+			scanner = new Scanner(file1);
+			
+			return scanner;
+		
+			}catch(Exception e) {
+				System.out.println("Error al leer el archivo de la direccion"+ direccion);
+				
+			}
+		return null;
+		
+		
+	}
+	
+	private static void CargarPokemons(String linea,ArrayList<Pokemon> lista){
+		String Atributos[] = linea.split(";");
+		Pokemon pokemon = new Pokemon(Atributos[0],Atributos[1], Float.parseFloat(Atributos[2]), Integer.parseInt(Atributos[3]), Integer.parseInt(Atributos[4]), Integer.parseInt((Atributos[5])), Integer.parseInt(Atributos[6]), Integer.parseInt(Atributos[7]), Integer.parseInt(Atributos[8]),Atributos[9]);
+		lista.add(pokemon);
+		String habitatpokemon = pokemon.getHabitat();
+		for (Habitat H : listabiomas) {
+			if(H.getNombre().equals(habitatpokemon)){
+				H.AñadirAlBioma(pokemon);
+			}
+			
+			
+			
+			
+		}
+	}
+	
+	private static void CargarHabitats(String linea,ArrayList<Habitat> lista) {
+		Habitat H = new Habitat(linea);
+		lista.add(H);
+	}
+	
+	
+	
+	
 }
 
 

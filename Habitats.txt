@@ -1,0 +1,7 @@
+Lago
+Cueva
+Montaña
+Bosque
+Prado
+Mar
+none
