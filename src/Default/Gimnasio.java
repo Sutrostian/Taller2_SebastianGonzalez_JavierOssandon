@@ -84,10 +84,13 @@ public class Gimnasio {
 	
 	public boolean ComprobarDesafio(Gimnasio GymEleccion, Gimnasio GymAnterior,String NombreJugador) {
 		String estado1 = GymEleccion.getEstado();
+		
 		String estado2 = GymAnterior.getEstado();
 		if(estado1.equals("Derrotado")){
 		  System.out.println("Ya eres el maestro pokemon de este gimnasio");
 		  return false;
+		  
+		 
 		}
 		if(estado1.equals("Sin derrotar")) {
 			if(estado2.equals("Sin derrotar")) {

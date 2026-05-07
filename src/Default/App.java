@@ -121,7 +121,7 @@ public class App {
 		
 		
 		case "1":	
-			PartidaActual.getEquipoPokemon();
+			PartidaActual.getEquipoCombatePokemon();
 			
 		break;
 
@@ -169,14 +169,21 @@ public class App {
 			eleccion = s.nextInt();
 			Gimnasio Gym = listaGimnasios.get(eleccion);
 		    Gimnasio GymAnterior = listaGimnasios.get(eleccion-1);
-			Boolean comprobar = Gym.ComprobarDesafio(Gym, GymAnterior,PartidaActual.getNombreJugador());
+		    boolean Comprobar = true;
+		    if(eleccion != 1) {
+			Comprobar = Gym.ComprobarDesafio(Gym, GymAnterior,PartidaActual.getNombreJugador());
+		    }
+		    if(!Comprobar) {
+		    	break;
+		    }
+		    ArrayList<Pokemon> EquipoCombate = PartidaActual.DeterminarEquipoActual();
+		    
+		    PartidaActual.getEquipoCombatePokemon();
+		    
+		    
 			
-			
-			
-			
-			
-			
-			
+		    
+		    
 			
 
 		break;
@@ -294,15 +301,10 @@ public class App {
 		for (Gimnasio g : lista) {
 			String nombre = g.getNumerogym();
 			String jefe = g.getLider();
-			System.out.println(contador+jefe+"Estado: "+g.getEstado());
+			System.out.println(contador+".-) "+jefe+" Estado: "+g.getEstado());
 			contador++;
-		}
-		
-		
+		}	
 	}
-	
-	
-	
 	
 }
 

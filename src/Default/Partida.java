@@ -1,8 +1,13 @@
 package Default;
+import java.lang.runtime.SwitchBootstraps;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Partida {
 	private String NombreJugador;
 	private ArrayList<Pokemon> EquipoPokemon;
+	private Pokemon[] EquipoPokemonActual;
+	
 	
 	/**
 	 * @param nombreJugador
@@ -12,6 +17,7 @@ public class Partida {
 		super();
 		NombreJugador = nombreJugador;
 		EquipoPokemon = new ArrayList<Pokemon>();
+		EquipoPokemonActual = new Pokemon[6];
 		
 	}
 	public String getNombreJugador() {
@@ -33,8 +39,26 @@ public class Partida {
 			}
 		}
 		
+		
 	
 	}
+	
+	public void getEquipoCombatePokemon() {
+		
+			for (int i = 0; i < 6; i++) {
+				Pokemon p = EquipoPokemonActual[i];
+				System.out.println((i+1)+".-"+p);
+				
+				
+			
+		}
+		
+		
+	
+	}
+	
+	
+	
 	public void setEquipoPokemon(ArrayList<Pokemon> equipoPokemon) {
 		EquipoPokemon = equipoPokemon;
 	}
@@ -71,6 +95,78 @@ public class Partida {
 	   
    }
 
+   
+   public boolean SimularCombate(String Enemigo,ArrayList<Pokemon> EquipoPokemon, ArrayList<Pokemon> Equipoenemigo) {
+	   Scanner s = new Scanner(System.in);
+	   Boolean VictoriaDeCombate = false;
+	   boolean OponenteDerrotado = false;
+	   boolean AcaboElCombate = false;
+	   int Contador = 0;
+	   Pokemon PokemonActual = EquipoPokemon.get(0);
+	   while(!AcaboElCombate) {
+		  
+		   Pokemon PokemonEnemigo = Equipoenemigo.get(Contador);
+		   System.out.println(Enemigo+" Saca a "+ PokemonEnemigo);
+		   System.out.println(NombreJugador+" Saca a "+ PokemonActual);
+		   
+		   String eleccion = "0";
+		   System.out.println("-----------------------------------------");
+		   System.out.println("¿Que deseas hacer?");
+		   System.out.println("1) Atacar");
+		   System.out.println("2) Cambiar De Pokemon");
+		   System.out.println("3) Rendirse");
+		   
+		   eleccion = s.nextLine();
+		   switch(eleccion){
+		   case "1":
+			   System.out.println(PokemonActual.getNombrePokemon()+"--->"+PokemonActual.getEstadisticasTotales());
+			   System.out.println(PokemonEnemigo.getNombrePokemon()+"--->"+PokemonEnemigo.getEstadisticasTotales());
+			   
+			   
+			   if(PokemonActual.getEstadisticasTotales()>PokemonEnemigo.getEstadisticasTotales()) {
+				   System.out.println(PokemonActual.getNombrePokemon()+" Gano El Combate");
+				   break;
+				   
+			   }
+			   if(PokemonActual.getEstadisticasTotales()<PokemonEnemigo.getEstadisticasTotales()) {
+				   System.out.println(PokemonActual.getNombrePokemon()+"Perdio El Combate");
+				   PokemonActual.setVida(0);
+				   VictoriaDeCombate = false;
+				   break;
+				    
+				   
+			   }
+		   }
+		   
+		 
+		   
+		   
+		   
+	   }
+	   return VictoriaDeCombate;
+	   
+   }
+   /////
+   public ArrayList<Pokemon> DeterminarEquipoActual() {
+	   ArrayList<Pokemon> hola = new ArrayList<Pokemon>();
+	   
+	   for (int i = 0; i < EquipoPokemonActual.length; i++) {
+		   if(EquipoPokemonActual[i] != null) {
+			   EquipoPokemonActual[i] = null;
+		   }
+		
+	}
+	   for (int i = 0; i < EquipoPokemonActual.length; i++) {
+		   EquipoPokemonActual[i] = EquipoPokemon.get(i);
+	}
+	   for (int i = 0; i < EquipoPokemonActual.length; i++) {
+		   hola.add(EquipoPokemonActual[i]);
+		
+	}
+	
+		return hola;
+	
+   }
   
    
    

@@ -105,13 +105,14 @@ public class Pokemon {
 	public void setTipo(String tipo) {
 		Tipo = tipo;
 	}
-	
+	public int getEstadisticasTotales() {
+		return EstadisticasTotales; 
+	}
 
 	public void FueCapturado(Pokemon p, Partida partida) {
 		Random rand = new Random();
 		float r1 = rand.nextFloat();
-		Random randm = new Random();
-		float r2 = rand.nextFloat();
+		float r2 = Float.parseFloat("0.3");
 		if(r1<r2*2) {
 			System.out.println("El Pokemon "+p.getNombrePokemon()+" ha sido capturado!!!");
 			partida.AñadirPokemonAlEquipo(p);
