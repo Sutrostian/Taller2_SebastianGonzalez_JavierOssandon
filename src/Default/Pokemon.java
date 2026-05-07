@@ -10,7 +10,9 @@ public class Pokemon {
 	private int ESATK;
 	private int ESDF;
 	private int VEL;
+	private int EstadisticasTotales;
 	private String Tipo;
+	private String Estado;
 	/**
 	 * @param nombrePokemon
 	 * @param habitat
@@ -36,12 +38,12 @@ public class Pokemon {
 		ESDF = eSDF;
 		VEL = vEL;
 		Tipo = tipo;
+		EstadisticasTotales = vida+aTK+dF+eSATK+eSDF+vEL;
+		String Estado = "vivo";
 	}
 	@Override
 	public String toString() {
-		return "Pokemon ["+nombrePokemon + ", habitat=" + habitat + ", ProbabilidadAparicion="
-				+ ProbabilidadAparicion + ", vida=" + vida + ", ATK=" + ATK + ", DF=" + DF + ", ESATK=" + ESATK
-				+ ", ESDF=" + ESDF + ", VEL=" + VEL + ", Tipo=" + Tipo + "]";
+		return nombrePokemon+"|"+Tipo+"|"+"Stats Totales: "+EstadisticasTotales;
 	}
 	public String getNombrePokemon() {
 		return nombrePokemon;
@@ -121,6 +123,8 @@ public class Pokemon {
 		}
 		
 	}
+	
+	
 	
 	
 	

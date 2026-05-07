@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Partida {
 	private String NombreJugador;
 	private ArrayList<Pokemon> EquipoPokemon;
+	
 	/**
 	 * @param nombreJugador
 	 * @param equipoPokemon
@@ -19,11 +20,20 @@ public class Partida {
 	public void setNombreJugador(String nombreJugador) {
 		NombreJugador = nombreJugador;
 	}
-	public ArrayList<Pokemon> getEquipoPokemon() {
+	public void getEquipoPokemon() {
 		if(EquipoPokemon.size() == 0) {
 			System.out.println("Aun no tienes ningun Pokemon, Vamos ve a atraparlos :)");
+			
+		}else {
+			for (int i = 0; i < EquipoPokemon.size(); i++) {
+				Pokemon p = EquipoPokemon.get(i);
+				System.out.println((i+1)+".-"+p);
+				
+				
+			}
 		}
-		return EquipoPokemon;
+		
+	
 	}
 	public void setEquipoPokemon(ArrayList<Pokemon> equipoPokemon) {
 		EquipoPokemon = equipoPokemon;
@@ -59,11 +69,9 @@ public class Partida {
 	   EquipoPokemon.set(pos2, Aux);
 	   System.out.println("Intercambiados con exito");
 	   
-	   
-	   
-	   
    }
 
+  
    
    
 }

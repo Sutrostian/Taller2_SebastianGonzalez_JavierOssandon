@@ -8,6 +8,7 @@ import java.io.*;
 
 public class App {
 	private static Partida PartidaActual;
+	private static ArrayList<Gimnasio> listaGimnasios;
 	private static ArrayList<Pokemon> listapokemons;
 	private static ArrayList<Habitat> listabiomas;
 	private static Scanner s = new Scanner(System.in);
@@ -22,6 +23,10 @@ public class App {
 		
 		listabiomas = new ArrayList<Habitat>();
 		listapokemons = new ArrayList<Pokemon>();
+	    listaGimnasios	= new ArrayList<Gimnasio>();
+	    
+		
+		
 		
 		lectorRegistros = CargarArchivo(lectorRegistros, "Registros.txt");
 		LectorHabitats=CargarArchivo(LectorHabitats, "Habitats.txt");
@@ -37,13 +42,12 @@ public class App {
 		
 		while(LectorPokedex.hasNextLine()) {
 			String linea = LectorPokedex.nextLine();
-			CargarPokemons(linea, listapokemons);
-			
+			CargarPokemons(linea, listapokemons);	
 		}
 		
-		
-		for (Habitat h : listabiomas) {
-			h.ConsultarPokemonsZona(h);
+		while(LectorGimnasio.hasNextLine()) {
+			String linea = LectorGimnasio.nextLine();
+			CargarGym(linea, listaGimnasios);
 		}
 		
 		
@@ -117,7 +121,7 @@ public class App {
 		
 		
 		case "1":	
-			PartidaActual.ListaPokemons();
+			PartidaActual.getEquipoPokemon();
 			
 		break;
 
@@ -160,6 +164,20 @@ public class App {
 		break;
 		
 		case "4":
+			System.out.println("Que Gimnasio Deseas Desafiar?");
+			PrintearGimnasios(listaGimnasios);
+			eleccion = s.nextInt();
+			Gimnasio Gym = listaGimnasios.get(eleccion);
+		    Gimnasio GymAnterior = listaGimnasios.get(eleccion-1);
+			Boolean comprobar = Gym.ComprobarDesafio(Gym, GymAnterior,PartidaActual.getNombreJugador());
+			
+			
+			
+			
+			
+			
+			
+			
 
 		break;
 		
@@ -233,6 +251,54 @@ public class App {
 	private static void CargarHabitats(String linea,ArrayList<Habitat> lista) {
 		Habitat H = new Habitat(linea);
 		lista.add(H);
+	}
+	
+	
+	private static void CargarGym(String Linea,ArrayList<Gimnasio> lista) {
+		
+		String[] Atributos = Linea.split(";");
+		Gimnasio G = new Gimnasio(Atributos[0], Atributos[1], Atributos[2],Integer.parseInt(Atributos[3]));
+	    lista.add(G);
+	    
+	    for (int i = 4; i < Atributos.length; i++) {
+	    	if(Atributos[i] != null) {
+	    		Pokemon PokemonAñadir = EncontrarPokemonNombre(Atributos[i], listapokemons);
+	  
+	    		
+	    	
+	    	}
+			
+		}
+	    
+	    
+	
+	}
+	
+	
+	private static Pokemon EncontrarPokemonNombre(String nombre,ArrayList<Pokemon>listPokemons) {
+		Pokemon encontrado = null;
+		for (Pokemon p : listPokemons) {
+			if(nombre.equals(p.getNombrePokemon())){
+				encontrado = p;
+			}
+			
+		}
+		return encontrado;
+		
+	}
+	
+	
+	private static void PrintearGimnasios(ArrayList<Gimnasio> lista) {
+		int contador = 1;
+		System.out.println("Que lider deseas retar?");
+		for (Gimnasio g : lista) {
+			String nombre = g.getNumerogym();
+			String jefe = g.getLider();
+			System.out.println(contador+jefe+"Estado: "+g.getEstado());
+			contador++;
+		}
+		
+		
 	}
 	
 	
