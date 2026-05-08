@@ -1,4 +1,7 @@
-sebastian;0
-Gengar;vivo
-Gliscor;vivo
-Trevenant;vivo
+sebas;0
+Whiscash;vivo
+Sableye;vivo
+Charizard;vivo
+Centiskorch;vivo
+Minun;vivo
+Tentacruel;vivo

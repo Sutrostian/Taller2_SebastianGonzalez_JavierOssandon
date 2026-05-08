@@ -112,20 +112,26 @@ public class Pokemon {
 	
 
 	public void FueCapturado(Pokemon p, Partida partida) {
-		Random rand = new Random();
-		float r1 = rand.nextFloat();
-		float r2 = Float.parseFloat("0.3");
-		if(r1<r2*2) {
-			System.out.println("El Pokemon "+p.getNombrePokemon()+" ha sido capturado!!!");
-			partida.AñadirPokemonAlEquipo(p);
-		
-			
-		}
-		if(r1>r2) {
-			System.out.println("el pokemon se ah escapado");
-		}
-		
+
+	    Random rand = new Random();
+
+	    float r1 = rand.nextFloat();
+	    float r2 = 0.3f;
+
+	    if(r1 < r2 * 2) {
+
+	        System.out.println("El Pokemon " + p.getNombrePokemon() + " ha sido capturado!!!");
+	        System.out.println("");
+
+	        partida.AñadirPokemonAlEquipo(p);
+	    }
+	    else {
+
+	        System.out.println("El pokemon se ha escapado");
+	        System.out.println("");
+	    }
 	}
+	
 	public String getEstado() {
 		return Estado;
 	}

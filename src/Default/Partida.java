@@ -45,30 +45,38 @@ public class Partida {
 	}
 	
 	public void getEquipoCombatePokemon() {
-		
-			for (int i = 0; i < 6; i++) {
-				Pokemon p = EquipoPokemonActual[i];
-				System.out.println((i+1)+".-"+p);
-				
-				
+
+		for (int i = 0; i < 6; i++) {
 			
+			Pokemon p = EquipoPokemonActual[i];
+			
+			if(p == null) {
+				System.out.println((i+1)+".- Espacio Vacio");
+			}else {
+				System.out.println((i+1)+".-"+p);
+			}
 		}
-		
-		
-	
 	}
-	
-	
-	
+		
 	public void setEquipoPokemon(ArrayList<Pokemon> equipoPokemon) {
 		EquipoPokemon = equipoPokemon;
 	}
 	
 	public void AñadirPokemonAlEquipo(Pokemon p){
+
 		EquipoPokemon.add(p);
-		System.out.println("el pokemon "+p+" ha sido añadido al equipo");
-		
-		
+
+		for(int i = 0; i < EquipoPokemonActual.length; i++) {
+			
+			if(EquipoPokemonActual[i] == null) {
+				
+				EquipoPokemonActual[i] = p;
+				break;
+			}
+		}
+
+		System.out.println("El pokemon "+p+" ha sido añadido al equipo");
+		System.out.println("");
 	}
 	
    public void ListaPokemons() {
@@ -167,6 +175,36 @@ public class Partida {
    public int getCantidadMedallas() {
 	return cantidadMedallas;
    }
+   
+   public void setCantidadMedallas(int cantidadMedallas) {
+		this.cantidadMedallas = cantidadMedallas;
+	}
+   
+   public void AñadirPokemonEquipoActual(Pokemon p) {
+
+		for(int i = 0; i < EquipoPokemonActual.length; i++) {
+			
+			if(EquipoPokemonActual[i] == null) {
+				
+				EquipoPokemonActual[i] = p;
+				break;
+			}
+		}
+	}
+   
+   public void CurarPokemons() {
+
+		for(Pokemon p : EquipoPokemon) {
+
+			if(p.getEstado().equals("Debilitado")) {
+
+				p.setEstado("Vivo");
+			}
+		}
+
+		System.out.println("Todos los pokemons debilitados han sido curados");
+		System.out.println("");
+	}
    
    
    

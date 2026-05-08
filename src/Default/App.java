@@ -63,14 +63,17 @@ public class App {
 			System.out.println("1. Continuar");
 			System.out.println("2. Nueva partida");
 			System.out.println("3. Salir");
-			System.out.println("> ");
+			System.out.print("> ");
 
 			opcion = s.nextLine();
 
 			switch (opcion) {
 			
 			case "1":
-				cargarSubMenu();						
+				cargarPartida();
+				if(PartidaActual != null) {
+					cargarSubMenu();
+				}						
 			break;
 
 			case "2":
@@ -112,8 +115,7 @@ public class App {
 		System.out.println("6. Curar Pokemon.");//Se curarán todos los Pokémon debilitados, pasando su estado a 'Vivo'.
 		System.out.println("7. Guardar.");//Se sobrescriben los datos en Registros.txt.
 		System.out.println("8. Guardar Y Salir.");//Se guardan los datos y finaliza el programa.
-		System.out.println("9. Volver Al Menu General");
-		System.out.println("> ");
+		System.out.print("> ");
 
 		opcion = s.nextLine();
 
@@ -121,34 +123,62 @@ public class App {
 		
 		
 		case "1":	
-			PartidaActual.getEquipoCombatePokemon();
-			
+			PartidaActual.getEquipoCombatePokemon();	
 		break;
 
 		case "2":
+
 			System.out.println("Donde deseas ir a explorar?");
-			for(int i = 0; i<listabiomas.size();i++) {
-				System.out.println(i+") "+listabiomas.get(i));
+			System.out.println("");
+			System.out.println("Zonas disponibles:");
+			System.out.println("");
+
+			for(int i = 0; i < listabiomas.size(); i++) {
+
+				System.out.println((i + 1) + ") " + listabiomas.get(i).getNombre());
 			}
+
+			System.out.println((listabiomas.size() + 1) + ") Volver al menu.");
+			System.out.print("> ");
+
 			int eleccion = Integer.parseInt(s.nextLine());
-			Habitat HElegido = listabiomas.get(eleccion);
+			
+			if(eleccion < 1 || eleccion > listabiomas.size() + 1) {
+
+			    System.out.println("Opcion invalida.");
+			    System.out.println("");
+			    break;
+			}
+
+			if(eleccion == listabiomas.size() + 1) {
+				break;
+			}
+
+			Habitat HElegido = listabiomas.get(eleccion - 1);
+
 			Pokemon aparicion = HElegido.AparicionPokemon(HElegido);
-			System.out.println("APARECIO UN "+aparicion.getNombrePokemon()+"!!!");
+
+			System.out.println("APARECIO UN " + aparicion.getNombrePokemon() + "!!!");
+
 			System.out.println("Que deseas Hacer?");
 			System.out.println("1) Capturar");
 			System.out.println("2) Huir");
-			eleccion = Integer.parseInt(s.nextLine());
+			System.out.print("> ");
 			
+
+			eleccion = Integer.parseInt(s.nextLine());
+
 			if(eleccion == 2) {
+
 				System.out.println("Has Escapado!!");
 				break;
 			}
+
 			if(eleccion == 1) {
+
 				aparicion.FueCapturado(aparicion, PartidaActual);
-				
-		
 			}
-		
+
 		break;
 		
 		case "3":
@@ -166,7 +196,7 @@ public class App {
 		case "4":
 			System.out.println("Que Gimnasio Deseas Desafiar?");
 			PrintearGimnasios(listaGimnasios);
-			eleccion = s.nextInt();
+			eleccion = Integer.parseInt(s.nextLine());
 			Gimnasio Gym = listaGimnasios.get(eleccion);
 		    Gimnasio GymAnterior = listaGimnasios.get(eleccion-1);
 		    boolean Comprobar = true;
@@ -193,7 +223,7 @@ public class App {
 		break;
 		
 		case "6":
-
+			PartidaActual.CurarPokemons();
 		break;
 		
 		case "7":
@@ -216,6 +246,52 @@ public class App {
 		} while (!opcion.equals("9"));// ejecutar mientras opcion sea distinto de 9	
 	}
 	
+	
+	private static void cargarPartida() {
+
+		try {
+
+			Scanner lector = new Scanner(new File("Registros.txt"));
+
+			String primeraLinea = lector.nextLine();
+			String[] datosJugador = primeraLinea.split(";");
+
+			String nombreJugador = datosJugador[0];
+			int medallas = Integer.parseInt(datosJugador[1]);
+
+			PartidaActual = new Partida(nombreJugador);
+			PartidaActual.setCantidadMedallas(medallas);
+
+			while(lector.hasNextLine()) {
+
+				String linea = lector.nextLine();
+				String[] datosPokemon = linea.split(";");
+
+				String nombrePokemon = datosPokemon[0];
+				String estado = datosPokemon[1];
+
+				Pokemon p = EncontrarPokemonNombre(nombrePokemon, listapokemons);
+
+				if(p != null) {
+
+					p.setEstado(estado);
+
+					PartidaActual.AñadirPokemonAlEquipo(p);
+					PartidaActual.AñadirPokemonEquipoActual(p);
+				}
+			}
+
+			lector.close();
+
+			System.out.println("Partida cargada correctamente");
+			System.out.println("");
+
+		}catch(Exception e) {
+
+			System.out.println("Error al cargar partida");
+			System.out.println("");
+		}
+	}
 	
 	private static void guardarPartida() {
 		try {
