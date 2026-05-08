@@ -39,7 +39,7 @@ public class Pokemon {
 		VEL = vEL;
 		Tipo = tipo;
 		EstadisticasTotales = vida+aTK+dF+eSATK+eSDF+vEL;
-		String Estado = "vivo";
+		this.Estado = "vivo";
 	}
 	@Override
 	public String toString() {
