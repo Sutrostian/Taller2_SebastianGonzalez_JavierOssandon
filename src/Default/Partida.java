@@ -1,10 +1,10 @@
 package Default;
-import java.lang.runtime.SwitchBootstraps;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Partida {
 	private String NombreJugador;
+	private int cantidadMedallas;
 	private ArrayList<Pokemon> EquipoPokemon;
 	private Pokemon[] EquipoPokemonActual;
 	
@@ -18,6 +18,7 @@ public class Partida {
 		NombreJugador = nombreJugador;
 		EquipoPokemon = new ArrayList<Pokemon>();
 		EquipoPokemonActual = new Pokemon[6];
+		cantidadMedallas = 0;
 		
 	}
 	public String getNombreJugador() {
@@ -148,26 +149,25 @@ public class Partida {
    }
    /////
    public ArrayList<Pokemon> DeterminarEquipoActual() {
-	   ArrayList<Pokemon> hola = new ArrayList<Pokemon>();
-	   
-	   for (int i = 0; i < EquipoPokemonActual.length; i++) {
-		   if(EquipoPokemonActual[i] != null) {
-			   EquipoPokemonActual[i] = null;
-		   }
-		
+
+		ArrayList<Pokemon> equipoActual = new ArrayList<Pokemon>();
+
+		for(int i = 0; i < EquipoPokemonActual.length; i++) {
+			EquipoPokemonActual[i] = null;
+		}
+
+		for(int i = 0; i < EquipoPokemon.size() && i < 6; i++) {
+			
+			EquipoPokemonActual[i] = EquipoPokemon.get(i);
+			equipoActual.add(EquipoPokemonActual[i]);
+		}
+
+		return equipoActual;
 	}
-	   for (int i = 0; i < EquipoPokemonActual.length; i++) {
-		   EquipoPokemonActual[i] = EquipoPokemon.get(i);
-	}
-	   for (int i = 0; i < EquipoPokemonActual.length; i++) {
-		   hola.add(EquipoPokemonActual[i]);
-		
-	}
-	
-		return hola;
-	
+   public int getCantidadMedallas() {
+	return cantidadMedallas;
    }
-  
+   
    
    
 }

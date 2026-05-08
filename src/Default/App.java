@@ -197,11 +197,13 @@ public class App {
 		break;
 		
 		case "7":
-
+			guardarPartida();
 		break;
 		
 		case "8":
-
+			guardarPartida();
+			System.out.println("Saliendo...");
+			System.exit(0);
 		break;
 		
 		default:
@@ -215,14 +217,32 @@ public class App {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	private static void guardarPartida() {
+		try {
+			
+			BufferedWriter bw = new BufferedWriter(new FileWriter("Registros.txt"));
+			
+			bw.write(PartidaActual.getNombreJugador()+";"+PartidaActual.getCantidadMedallas());
+			bw.newLine();
+			
+			ArrayList<Pokemon> equipoActual = PartidaActual.DeterminarEquipoActual();
+			
+			for(Pokemon p : equipoActual) {
+				
+				bw.write(p.getNombrePokemon()+";"+p.getEstado());
+				bw.newLine();
+			}
+			
+			bw.close();
+			
+			System.out.println("Datos guardados correctamente");
+			
+		}catch(Exception e) {
+			
+			System.out.println("Error al guardar");
+		}
+	}
+
 	private static Scanner CargarArchivo(Scanner scanner,String direccion) {
 		try {
 			File file1 = new File(direccion);

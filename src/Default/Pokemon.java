@@ -108,6 +108,8 @@ public class Pokemon {
 	public int getEstadisticasTotales() {
 		return EstadisticasTotales; 
 	}
+	
+	
 
 	public void FueCapturado(Pokemon p, Partida partida) {
 		Random rand = new Random();
@@ -123,6 +125,12 @@ public class Pokemon {
 			System.out.println("el pokemon se ah escapado");
 		}
 		
+	}
+	public String getEstado() {
+		return Estado;
+	}
+	public void setEstado(String estado) {
+		Estado = estado;
 	}
 	
 	

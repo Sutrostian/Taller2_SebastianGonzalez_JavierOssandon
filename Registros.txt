@@ -1,0 +1,4 @@
+sebastian;0
+Gengar;vivo
+Gliscor;vivo
+Trevenant;vivo
