@@ -1,7 +1,5 @@
-sebas;0
-Whiscash;vivo
-Sableye;vivo
-Charizard;vivo
-Centiskorch;vivo
-Minun;vivo
-Tentacruel;vivo
+ITSVOIIIID;0
+Poliwrath;vivo
+Aggron;vivo
+Infernape;vivo
+Decidueye;vivo

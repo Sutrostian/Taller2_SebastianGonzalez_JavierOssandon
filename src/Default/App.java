@@ -211,6 +211,8 @@ public class App {
 		    PartidaActual.getEquipoCombatePokemon();
 		    
 		    
+		    
+		    
 			
 		    
 		    

@@ -98,6 +98,11 @@ public class Partida {
 	   Pokemon pokemon1 = EquipoPokemon.get(pos1);
 	   Pokemon pokemon2 = EquipoPokemon.get(pos2);
 	   Pokemon Aux = pokemon1;
+	   
+	   EquipoPokemonActual[pos1] = pokemon2;
+	   EquipoPokemonActual[pos2] = Aux;
+	   
+	   
 	   EquipoPokemon.set(pos1, pokemon2);
 	   EquipoPokemon.set(pos2, Aux);
 	   System.out.println("Intercambiados con exito");
