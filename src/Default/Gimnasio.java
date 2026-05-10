@@ -9,6 +9,7 @@ public class Gimnasio {
 	private String Estado;
 	private int CantidadPokemons;
 	private ArrayList<Pokemon> pokemonsgym;
+
 	/**
 	 * @param numerogym
 	 * @param lider

@@ -11,6 +11,7 @@ public class App {
 	private static ArrayList<Gimnasio> listaGimnasios;
 	private static ArrayList<Pokemon> listapokemons;
 	private static ArrayList<Habitat> listabiomas;
+	private static ArrayList<Gimnasio> AltoMando;
 	private static Scanner s = new Scanner(System.in);
     private static Scanner lectorRegistros = null;
     private static Scanner LectorHabitats = null;
@@ -24,7 +25,7 @@ public class App {
 		listabiomas = new ArrayList<Habitat>();
 		listapokemons = new ArrayList<Pokemon>();
 	    listaGimnasios	= new ArrayList<Gimnasio>();
-	    
+	    AltoMando = new ArrayList<Gimnasio>();
 		
 		
 		
@@ -50,6 +51,11 @@ public class App {
 			CargarGym(linea, listaGimnasios);
 		}
 		
+		while(LectorAltoMando.hasNextLine()) {
+			String linea = LectorAltoMando.nextLine();
+			CargarAltoMando(linea, AltoMando);
+			
+		}
 		
 		cargarMenu();
 		
@@ -241,6 +247,38 @@ public class App {
 		break;
 		
 		case "5":
+			boolean Desafio = ComprobarDesafioAltoMando(listaGimnasios);
+			if(!Desafio) {
+				break;
+			}
+			System.out.println("A Quien Desafiaras?");
+			PrintearGimnasios(AltoMando);
+			int Seleccion = Integer.parseInt(s.nextLine());
+			Gimnasio Jefe = AltoMando.get(Seleccion-1);
+			Gimnasio JefeAnterior = null;
+			boolean DesafioValido = true;
+			if(Jefe.getEstado().equals("Derrotado")) {
+				System.out.println("Ya Has Derrotado A Este Jefe Del Alto Mando");
+				break;
+			}
+			if(Seleccion != 1) {
+				JefeAnterior = AltoMando.get(Seleccion-2);
+				DesafioValido = Jefe.ComprobarDesafio(Jefe, JefeAnterior, PartidaActual.getNombreJugador());
+			}
+			if(!DesafioValido) {
+				break;
+			}
+			
+			ArrayList<Pokemon> EquipoDesafio = PartidaActual.DeterminarEquipoActual();
+			
+			PartidaActual.SimularCombate(Jefe.getLider(), EquipoDesafio, Jefe.getEquipoEnemigo(), PartidaActual,Jefe);
+			
+			  
+			
+			
+			
+			
+			
 
 		break;
 		
@@ -430,13 +468,49 @@ public class App {
 	private static void PrintearGimnasios(ArrayList<Gimnasio> lista) {
 		int contador = 1;
 		System.out.println("Que lider deseas retar?");
+		System.out.println(contador);
 		for (Gimnasio g : lista) {
+			
 			String nombre = g.getNumerogym();
 			String jefe = g.getLider();
 			System.out.println(contador+".-) "+jefe+" Estado: "+g.getEstado());
 			contador++;
 		}	
 	}
+	
+	private static void CargarAltoMando(String Linea, ArrayList<Gimnasio> AltoMando) {
+		String[] Atributos = Linea.split(";");
+		Gimnasio g = new Gimnasio(Atributos[0],Atributos[1], "Sin derrotar", (Atributos.length)-1);
+		
+		AltoMando.add(g);
+		for (int i = 2; i < Atributos.length; i++) {
+			Pokemon PokemonAñadir = EncontrarPokemonNombre(Atributos[i].trim(),listapokemons);
+			g.AñadirPokemonGym(PokemonAñadir);
+			
+			
+		}
+		
+	}
+	private static boolean ComprobarDesafioAltoMando(ArrayList<Gimnasio> listagym) {
+		boolean PuedeDesafiar = false;
+		int GimnasiosSinDerrotar = 0;
+		for (Gimnasio g : listagym) {
+			if(g.getEstado().equals("Sin derrotar")) {
+				GimnasiosSinDerrotar++;
+			}
+		}
+	    if(GimnasiosSinDerrotar != 0) {
+	    	System.out.println("Aun No Puedes Desafiar Al Alto Mando");
+	    	System.out.println("Te Quedan Gimnasios Por Derrotar");
+	    }
+	    if(GimnasiosSinDerrotar == 0) {
+	    	System.out.println("Has Derrotado A Todos Los Gimnasios Pokemon");
+	    	System.out.println("El Alto Mando Te Permitira Combatir Contra Ellos");
+	    	PuedeDesafiar = true;
+	    }
+	   return PuedeDesafiar;
+	}
+	
 	
 }
 

@@ -1,6 +1,7 @@
-VOIIIIIIIIIID
+VOIIIIIIIIIID;EmmaLaArdillaRabiosa;MartinNegro;Ferran;Branco;Remi;Pruno;Dani;Maxi
+Psyduck;vivo
 Psyduck;vivo
 Floatzel;vivo
+Floatzel;vivo
 Psyduck;vivo
-Seismitoad;vivo
-Magikarp;vivo
+Psyduck;vivo
