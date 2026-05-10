@@ -1,5 +1,6 @@
-ITSVOIIIID;0
-Poliwrath;vivo
-Aggron;vivo
-Infernape;vivo
-Decidueye;vivo
+VOIIIIIIIIIID
+Psyduck;vivo
+Floatzel;vivo
+Psyduck;vivo
+Seismitoad;vivo
+Magikarp;vivo

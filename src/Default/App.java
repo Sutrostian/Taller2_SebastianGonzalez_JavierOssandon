@@ -197,18 +197,38 @@ public class App {
 			System.out.println("Que Gimnasio Deseas Desafiar?");
 			PrintearGimnasios(listaGimnasios);
 			eleccion = Integer.parseInt(s.nextLine());
-			Gimnasio Gym = listaGimnasios.get(eleccion);
-		    Gimnasio GymAnterior = listaGimnasios.get(eleccion-1);
+			Gimnasio Gym = listaGimnasios.get(eleccion-1);
+		    Gimnasio GymAnterior = null;
 		    boolean Comprobar = true;
+		    if(Gym.getEstado().equals("Derrotado")) {
+		    	System.out.println("Ya eres el Maestro Pokemon De Este Gimnasio");
+		    	
+		    	break;
+		    }
+		    
 		    if(eleccion != 1) {
+		    GymAnterior = listaGimnasios.get(eleccion-2);
 			Comprobar = Gym.ComprobarDesafio(Gym, GymAnterior,PartidaActual.getNombreJugador());
 		    }
 		    if(!Comprobar) {
 		    	break;
 		    }
-		    ArrayList<Pokemon> EquipoCombate = PartidaActual.DeterminarEquipoActual();
 		    
-		    PartidaActual.getEquipoCombatePokemon();
+		    ArrayList<Pokemon> EquipoCombate = PartidaActual.DeterminarEquipoActual();
+		   
+		    PartidaActual.SimularCombate(Gym.getLider(), EquipoCombate, Gym.getEquipoEnemigo(), PartidaActual,Gym);
+		    
+		    	
+				
+			
+		    
+		    
+		    
+		    
+
+
+		    
+		    
 		    
 		    
 		    
@@ -259,10 +279,15 @@ public class App {
 			String[] datosJugador = primeraLinea.split(";");
 
 			String nombreJugador = datosJugador[0];
-			int medallas = Integer.parseInt(datosJugador[1]);
-
 			PartidaActual = new Partida(nombreJugador);
-			PartidaActual.setCantidadMedallas(medallas);
+			
+			for(int i = 1;i<datosJugador.length;i++) {
+				
+				PartidaActual.setEstadoMedallas(datosJugador[i], listaGimnasios);
+				
+				
+			}
+			
 
 			while(lector.hasNextLine()) {
 
@@ -300,7 +325,7 @@ public class App {
 			
 			BufferedWriter bw = new BufferedWriter(new FileWriter("Registros.txt"));
 			
-			bw.write(PartidaActual.getNombreJugador()+";"+PartidaActual.getCantidadMedallas());
+			bw.write(PartidaActual.getNombreJugador()+PartidaActual.GuardarGimnasiosDerrotados(listaGimnasios));
 			bw.newLine();
 			
 			ArrayList<Pokemon> equipoActual = PartidaActual.DeterminarEquipoActual();
@@ -360,23 +385,32 @@ public class App {
 	
 	
 	private static void CargarGym(String Linea,ArrayList<Gimnasio> lista) {
-		
+
 		String[] Atributos = Linea.split(";");
-		Gimnasio G = new Gimnasio(Atributos[0], Atributos[1], Atributos[2],Integer.parseInt(Atributos[3]));
-	    lista.add(G);
-	    
-	    for (int i = 4; i < Atributos.length; i++) {
-	    	if(Atributos[i] != null) {
-	    		Pokemon PokemonAñadir = EncontrarPokemonNombre(Atributos[i], listapokemons);
-	  
-	    		
-	    	
-	    	}
-			
+
+		Gimnasio G = new Gimnasio(
+			Atributos[0],
+			Atributos[1],
+			Atributos[2],
+			Integer.parseInt(Atributos[3])
+		);
+
+		lista.add(G);
+
+		for (int i = 4; i < Atributos.length; i++) {
+
+			if(Atributos[i] != null) {
+
+				Pokemon PokemonAñadir =
+				EncontrarPokemonNombre(
+					Atributos[i].trim(),
+					listapokemons
+				);
+
+				
+				G.AñadirPokemonGym(PokemonAñadir); //para añadir el pokemon a la lista del gym
+			}
 		}
-	    
-	    
-	
 	}
 	
 	

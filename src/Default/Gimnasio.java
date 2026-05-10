@@ -26,6 +26,10 @@ public class Gimnasio {
 		
 	}
 	
+	public ArrayList<Pokemon> getEquipoEnemigo(){
+		return pokemonsgym;
+	}
+	
 	
 	public void AñadirPokemonGym(Pokemon P) {
 		pokemonsgym.add(P);

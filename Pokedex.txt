@@ -1,5 +1,5 @@
 Magikarp;Lago;0.15;20;10;55;15;20;80;Agua
-Psyduck;Lago;0.15;50;52;48;65;50;55;Agua
+Psyduck;Lago;0.15;5000;52;48;65;50;55;Agua
 Poliwrath;Lago;0.05;90;95;95;70;90;70;Lucha
 Gyarados;Lago;0.05;95;125;79;60;100;81;Agua
 Golduck;Lago;0.05;80;82;78;95;80;85;Agua

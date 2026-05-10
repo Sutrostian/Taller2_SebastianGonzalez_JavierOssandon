@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Partida {
 	private String NombreJugador;
-	private int cantidadMedallas;
+	private ArrayList<String> cantidadMedallas;
 	private ArrayList<Pokemon> EquipoPokemon;
 	private Pokemon[] EquipoPokemonActual;
 	
@@ -18,7 +18,8 @@ public class Partida {
 		NombreJugador = nombreJugador;
 		EquipoPokemon = new ArrayList<Pokemon>();
 		EquipoPokemonActual = new Pokemon[6];
-		cantidadMedallas = 0;
+		cantidadMedallas = new ArrayList<String>();
+		
 		
 	}
 	public String getNombreJugador() {
@@ -43,6 +44,15 @@ public class Partida {
 		
 	
 	}
+	
+	public void IntercambioEquipoCombate() {
+		
+		
+		for (int i = 0; i < 6; i++) {
+			
+		 Pokemon p = EquipoPokemonActual[i];
+	}}
+	
 	
 	public void getEquipoCombatePokemon() {
 
@@ -94,34 +104,46 @@ public class Partida {
 	}
    }
    public void IntercambiarPokemons(int pos1,int pos2) {
-	   
-	   Pokemon pokemon1 = EquipoPokemon.get(pos1);
-	   Pokemon pokemon2 = EquipoPokemon.get(pos2);
-	   Pokemon Aux = pokemon1;
-	   
-	   EquipoPokemonActual[pos1] = pokemon2;
-	   EquipoPokemonActual[pos2] = Aux;
-	   
-	   
-	   EquipoPokemon.set(pos1, pokemon2);
-	   EquipoPokemon.set(pos2, Aux);
-	   System.out.println("Intercambiados con exito");
-	   
-   }
+
+		Pokemon pokemon1 = EquipoPokemon.get(pos1);
+		Pokemon pokemon2 = EquipoPokemon.get(pos2);
+
+		EquipoPokemon.set(pos1, pokemon2);
+		EquipoPokemon.set(pos2, pokemon1);
+
+		ActualizarEquipoCombate();
+
+		System.out.println("Intercambiados con exito");
+	}
 
    
-   public boolean SimularCombate(String Enemigo,ArrayList<Pokemon> EquipoPokemon, ArrayList<Pokemon> Equipoenemigo) {
+   public boolean SimularCombate(String Enemigo,ArrayList<Pokemon> EquipoPokemon, ArrayList<Pokemon> Equipoenemigo,Partida partida,Gimnasio	Gym) {
 	   Scanner s = new Scanner(System.in);
 	   Boolean VictoriaDeCombate = false;
 	   boolean OponenteDerrotado = false;
 	   boolean AcaboElCombate = false;
-	   int Contador = 0;
+	   
+	 
 	   Pokemon PokemonActual = EquipoPokemon.get(0);
+	   Pokemon PokemonEnemigo = Equipoenemigo.get(0);
+	   
+	   System.out.println(Enemigo+" Saca a "+ PokemonEnemigo.getNombrePokemon());
+	   System.out.println(NombreJugador+" Saca a "+ PokemonActual.getNombrePokemon()+"Stats :"+PokemonActual.getEstadisticasTotales());
+	   int FINAL = Equipoenemigo.size();
+	   
+	   
+	   
 	   while(!AcaboElCombate) {
-		  
-		   Pokemon PokemonEnemigo = Equipoenemigo.get(Contador);
-		   System.out.println(Enemigo+" Saca a "+ PokemonEnemigo);
-		   System.out.println(NombreJugador+" Saca a "+ PokemonActual);
+		   if(Equipoenemigo.size() == 0) {
+			   AcaboElCombate = true;
+			   VictoriaDeCombate = true;
+			   break;
+		   }
+		   
+		   
+		   PokemonEnemigo = Equipoenemigo.get(0);
+		   
+		   
 		   
 		   String eleccion = "0";
 		   System.out.println("-----------------------------------------");
@@ -139,17 +161,85 @@ public class Partida {
 			   
 			   if(PokemonActual.getEstadisticasTotales()>PokemonEnemigo.getEstadisticasTotales()) {
 				   System.out.println(PokemonActual.getNombrePokemon()+" Gano El Combate");
+				   Equipoenemigo.remove(PokemonEnemigo);
+				   FINAL--;
+				   if(FINAL == 0) {
+					   
+					   VictoriaDeCombate = true;
+					   AcaboElCombate = true;
+					   
+				   }
 				   break;
 				   
 			   }
 			   if(PokemonActual.getEstadisticasTotales()<PokemonEnemigo.getEstadisticasTotales()) {
-				   System.out.println(PokemonActual.getNombrePokemon()+"Perdio El Combate");
+				   System.out.println(PokemonActual.getNombrePokemon()+" Perdio El Combate");
 				   PokemonActual.setVida(0);
+				   PokemonActual.setEstado("Derrotado");
+				   
+			
+				   boolean RemplazoValido = false;
+				   while(!RemplazoValido) {
+					   System.out.println("Selecciona Otro Pokemon Para Continuar El Combate: ");
+					   partida.getEquipoCombatePokemon();
+					   String EleccionRemplazo = s.nextLine();
+					   if(EquipoPokemon.get(Integer.parseInt(EleccionRemplazo)-1).getEstado().equals("vivo")) {
+							  PokemonActual = EquipoPokemon.get(Integer.parseInt(EleccionRemplazo)-1);
+							  System.out.println(NombreJugador+" Saca a "+ PokemonActual.getNombrePokemon()+"Stats: "+PokemonActual.getEstadisticasTotales());
+							  System.out.println(Enemigo+" Tiene a "+ PokemonEnemigo);
+							  RemplazoValido = true;
+							  }
+					   if(EquipoPokemon.get(Integer.parseInt(EleccionRemplazo)-1).getEstado().equals("Derrotado")) {
+								  System.out.println("El Pokemon Esta Fuera De Combate...");
+							  }
+					   
+					   
+					   
+					   
+				   }
+				   
 				   VictoriaDeCombate = false;
+				   
 				   break;
-				    
+				   
+				   
 				   
 			   }
+		  case "2":
+			  System.out.println("Selecciona El Pokemon Para El Combate");
+			  partida.getEquipoCombatePokemon();
+			  String EleccionCombate = s.nextLine();
+			  
+			  
+			  if(EquipoPokemon.get(Integer.parseInt(EleccionCombate)-1).getEstado().equals("vivo")) {
+			  PokemonActual = EquipoPokemon.get(Integer.parseInt(EleccionCombate)-1);
+			  System.out.println(NombreJugador+" Saca a "+ PokemonActual.getNombrePokemon()+"Stats: "+PokemonActual.getEstadisticasTotales());
+			  System.out.println(Enemigo+" Tiene a "+ PokemonEnemigo);
+			  }else{
+				  System.out.println("El Pokemon Esta Fuera De Combate...");
+			  }
+			  break;
+		  case "3":
+			  System.out.println("Estas seguro de rendirte?");
+			  System.out.println("1.-) Si");
+			  System.out.println("2.-) No");
+			  int Rendirse = s.nextInt();
+			  if(Rendirse == 1) {
+				  
+				  AcaboElCombate = true;
+				  
+				  break;
+			  }
+			  
+		   }
+		   
+		   if(VictoriaDeCombate){
+			   System.out.println("Has Vencido Al Maestro Pokemon Del Gimnasio!!!");
+			   System.out.println("Ahora Estas Mas Cerca De Ser El Mejor Maestro Pokemon De Todos");
+			   Gym.setEstado("Derrotado");
+			   
+			   
+			   
 		   }
 		   
 		 
@@ -166,24 +256,29 @@ public class Partida {
 		ArrayList<Pokemon> equipoActual = new ArrayList<Pokemon>();
 
 		for(int i = 0; i < EquipoPokemonActual.length; i++) {
-			EquipoPokemonActual[i] = null;
-		}
 
-		for(int i = 0; i < EquipoPokemon.size() && i < 6; i++) {
-			
-			EquipoPokemonActual[i] = EquipoPokemon.get(i);
-			equipoActual.add(EquipoPokemonActual[i]);
+			if(EquipoPokemonActual[i] != null) {
+				equipoActual.add(EquipoPokemonActual[i]);
+			}
 		}
 
 		return equipoActual;
+	
 	}
-   public int getCantidadMedallas() {
+   public ArrayList<String> getCantidadMedallas() {
+	   String texto = "";
+	   if(cantidadMedallas.size() != 0) {
+	   for (String s : cantidadMedallas) {
+		   texto = texto+";"+s;
+		
+	}}
+	   
+	   
 	return cantidadMedallas;
    }
    
-   public void setCantidadMedallas(int cantidadMedallas) {
-		this.cantidadMedallas = cantidadMedallas;
-	}
+   
+   
    
    public void AñadirPokemonEquipoActual(Pokemon p) {
 
@@ -209,6 +304,46 @@ public class Partida {
 
 		System.out.println("Todos los pokemons debilitados han sido curados");
 		System.out.println("");
+	}
+   public void setEstadoMedallas(String Lider,ArrayList<Gimnasio> ListaDeGym){
+	   for (Gimnasio g : ListaDeGym) {
+		if(Lider.equals(g.getLider())){
+			g.setEstado("Derrotado");
+			
+		}
+		   
+	}
+	   
+	   
+	   
+	   
+   }
+   public String GuardarGimnasiosDerrotados(ArrayList<Gimnasio> ListaGym) {
+	   String texto = "";
+	   for (Gimnasio g : ListaGym) {
+		if(g.getEstado().equals("Derrotado")) {
+			texto = texto+";";
+			texto = texto+g.getLider();
+		}
+		   
+	}
+	   
+	   
+	   return texto; 
+	   
+   }
+   
+   public void ActualizarEquipoCombate() {
+
+		for(int i = 0; i < EquipoPokemonActual.length; i++) {
+
+			EquipoPokemonActual[i] = null;
+		}
+
+		for(int i = 0; i < EquipoPokemon.size() && i < 6; i++) {
+
+			EquipoPokemonActual[i] = EquipoPokemon.get(i);
+		}
 	}
    
    
