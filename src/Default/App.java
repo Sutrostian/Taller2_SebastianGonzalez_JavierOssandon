@@ -509,6 +509,9 @@ public class App {
 	    	PuedeDesafiar = true;
 	    }
 	   return PuedeDesafiar;
+	   
+	   
+	   
 	}
 	
 	

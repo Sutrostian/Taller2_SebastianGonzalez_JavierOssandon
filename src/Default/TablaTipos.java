@@ -41,6 +41,7 @@ public class TablaTipos {
                 columna = i;
             }
         }
+        
         double efectividad = EFECTIVIDAD[fila][columna];
         return efectividad;
     }

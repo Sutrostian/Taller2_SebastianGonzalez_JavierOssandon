@@ -7,7 +7,7 @@ public class Partida {
 	private ArrayList<String> cantidadMedallas;
 	private ArrayList<Pokemon> EquipoPokemon;
 	private Pokemon[] EquipoPokemonActual;
-	
+	private TablaTipos TablaEfectividad;
 	
 	/**
 	 * @param nombreJugador
@@ -19,6 +19,7 @@ public class Partida {
 		EquipoPokemon = new ArrayList<Pokemon>();
 		EquipoPokemonActual = new Pokemon[6];
 		cantidadMedallas = new ArrayList<String>();
+		TablaEfectividad = new TablaTipos();
 		
 		
 	}
@@ -158,8 +159,21 @@ public class Partida {
 			   System.out.println(PokemonActual.getNombrePokemon()+"--->"+PokemonActual.getEstadisticasTotales());
 			   System.out.println(PokemonEnemigo.getNombrePokemon()+"--->"+PokemonEnemigo.getEstadisticasTotales());
 			   
+			   double EstadisticasAliado = PokemonActual.getEstadisticasTotales();
+			   double EstadisticasEnemigo = PokemonEnemigo.getEstadisticasTotales();
 			   
-			   if(PokemonActual.getEstadisticasTotales()>PokemonEnemigo.getEstadisticasTotales()) {
+			   
+			   
+			   double NuevaEstadisticasAliado = EstadisticasAliado*TablaTipos.calcularEfectividad(PokemonActual, PokemonEnemigo);
+			   double NuevaEstadisticasEnemigo = EstadisticasEnemigo*TablaTipos.calcularEfectividad(PokemonEnemigo, PokemonActual);
+			   
+			   System.out.println("Nuevas Estadisticas "+PokemonActual.getNombrePokemon()+"--->"+NuevaEstadisticasAliado);
+			   System.out.println("Nuevas Estadisticas "+PokemonEnemigo.getNombrePokemon()+"--->"+NuevaEstadisticasEnemigo);
+			   
+			   
+			   
+			   
+			   if(NuevaEstadisticasAliado>NuevaEstadisticasEnemigo) {
 				   System.out.println(PokemonActual.getNombrePokemon()+" Gano El Combate");
 				   Equipoenemigo.remove(PokemonEnemigo);
 				   FINAL--;
@@ -172,7 +186,7 @@ public class Partida {
 				   break;
 				   
 			   }
-			   if(PokemonActual.getEstadisticasTotales()<PokemonEnemigo.getEstadisticasTotales()) {
+			   if(NuevaEstadisticasAliado<NuevaEstadisticasEnemigo) {
 				   System.out.println(PokemonActual.getNombrePokemon()+" Perdio El Combate");
 				   PokemonActual.setVida(0);
 				   PokemonActual.setEstado("Derrotado");
@@ -180,6 +194,17 @@ public class Partida {
 			
 				   boolean RemplazoValido = false;
 				   while(!RemplazoValido) {
+					   int vivos = 0;
+					   for (Pokemon pokemon : EquipoPokemon) {
+						   if(pokemon.getEstado().equals("vivo")) {
+							   vivos++;
+						   }
+						
+					}
+					   if(vivos == 0) {
+						   System.out.println("Todos Tus Pokemons Han Sido Derrotados, Has Sido Derrotado");
+						   return false;
+					   }
 					   System.out.println("Selecciona Otro Pokemon Para Continuar El Combate: ");
 					   partida.getEquipoCombatePokemon();
 					   String EleccionRemplazo = s.nextLine();
@@ -190,6 +215,8 @@ public class Partida {
 							  RemplazoValido = true;
 							  }
 					   if(EquipoPokemon.get(Integer.parseInt(EleccionRemplazo)-1).getEstado().equals("Derrotado")) {
+						   
+						   
 								  System.out.println("El Pokemon Esta Fuera De Combate...");
 							  }
 					   
